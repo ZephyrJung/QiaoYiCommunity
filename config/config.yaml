@@ -1,0 +1,46 @@
+server:
+  port: ":8080"
+  mode: "debug"
+  read_timeout: 10
+  write_timeout: 10
+
+database:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "root"
+  dbname: "qiaoyi_community"
+  charset: "utf8mb4"
+  max_idle_conns: 10
+  max_open_conns: 100
+
+redis:
+  host: "127.0.0.1"
+  port: 6379
+  password: ""
+  db: 0
+
+jwt:
+  access_secret: "your-access-secret-key-change-me"
+  refresh_secret: "your-refresh-secret-key-change-me"
+  access_expire_hours: 2
+  refresh_expire_days: 30
+
+wechat:
+  app_id: ""
+  app_secret: ""
+
+sms:
+  provider: "mock"
+  access_key: ""
+  access_secret: ""
+  sign_name: ""
+  template_code: ""
+
+oss:
+  type: "local"
+  endpoint: ""
+  bucket: ""
+  access_key: ""
+  secret_key: ""
+  domain: ""
