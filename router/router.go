@@ -1,10 +1,13 @@
 package router
 
 import (
+	_ "github.com/ZephyrJung/QiaoYiCommunity/docs"
 	"github.com/ZephyrJung/QiaoYiCommunity/handler/api"
 	"github.com/ZephyrJung/QiaoYiCommunity/middleware"
 	"github.com/ZephyrJung/QiaoYiCommunity/pkg/jwt"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Dependencies struct {
@@ -26,6 +29,8 @@ func SetupRouter(deps *Dependencies) *gin.Engine {
 	r.Use(middleware.Recovery())
 	r.Use(middleware.CORS())
 	r.Use(deps.RateLimiter.Middleware())
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	public := r.Group("/api/v1")
 	{

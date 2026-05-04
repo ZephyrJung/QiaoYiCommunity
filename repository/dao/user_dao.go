@@ -13,6 +13,8 @@ type UserDAO interface {
 	GetByOpenID(ctx context.Context, openID string) (*entity.User, error)
 	GetByPhone(ctx context.Context, phone string) (*entity.User, error)
 	Update(ctx context.Context, user *entity.User) error
+	GetProfile(ctx context.Context, userID int64) (*entity.UserProfile, error)
+	SaveProfile(ctx context.Context, profile *entity.UserProfile) error
 }
 
 type userDAO struct {

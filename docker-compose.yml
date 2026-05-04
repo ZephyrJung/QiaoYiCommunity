@@ -1,0 +1,60 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: qiaoyi-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: qiaoyi_community
+      MYSQL_USER: qiaoyi
+      MYSQL_PASSWORD: qiaoyi123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    networks:
+      - qiaoyi-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: qiaoyi-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - qiaoyi-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qiaoyi-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=qiaoyi_community
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - qiaoyi-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  qiaoyi-network:
+    driver: bridge
