@@ -48,6 +48,14 @@ func (c *Client) TTL(ctx context.Context, key string) (time.Duration, error) {
 	return c.client.TTL(ctx, key).Result()
 }
 
+func (c *Client) RunScript(ctx context.Context, script interface{}, keys []string, args ...interface{}) (interface{}, error) {
+	s, ok := script.(*redis.Script)
+	if !ok {
+		return nil, fmt.Errorf("invalid script type")
+	}
+	return s.Run(ctx, c.client, keys, args...).Result()
+}
+
 func SMSCodeKey(phone string) string {
 	return fmt.Sprintf("sms:code:%s", phone)
 }

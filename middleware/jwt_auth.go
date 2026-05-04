@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	ContextUserIDKey = "user_id"
-	ContextRoleKey   = "role"
+	ContextUserIDKey  = "user_id"
+	ContextRoleKey    = "role"
+	ContextTokenIDKey = "token_id"
 )
 
 func JWTAuth(jwtMgr *jwt.Manager) gin.HandlerFunc {
@@ -37,6 +38,7 @@ func JWTAuth(jwtMgr *jwt.Manager) gin.HandlerFunc {
 
 		c.Set(ContextUserIDKey, claims.UserID)
 		c.Set(ContextRoleKey, claims.Role)
+		c.Set(ContextTokenIDKey, claims.TokenID)
 		c.Next()
 	}
 }

@@ -32,5 +32,6 @@ func GenerateIDString() string {
 }
 
 func ParseID(id int64) time.Time {
-	return snowflake.ParseInt64(id).Time()
+	ms := snowflake.ParseInt64(id).Time()
+	return time.Unix(0, ms*int64(time.Millisecond))
 }
