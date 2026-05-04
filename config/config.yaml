@@ -1,46 +1,46 @@
 server:
-  port: "${SERVER_PORT:-:8080}"
-  mode: "${SERVER_MODE:-debug}"
+  port: ":8080"
+  mode: "debug"
   read_timeout: 10
   write_timeout: 10
 
 database:
-  host: "${DB_HOST:-127.0.0.1}"
-  port: ${DB_PORT:-3306}
-  user: "${DB_USER:-root}"
-  password: "${DB_PASSWORD:-root}"
-  dbname: "${DB_NAME:-qiaoyi_community}"
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "root"
+  dbname: "qiaoyi_community"
   charset: "utf8mb4"
   max_idle_conns: 10
   max_open_conns: 100
 
 redis:
-  host: "${REDIS_HOST:-127.0.0.1}"
-  port: ${REDIS_PORT:-6379}
-  password: "${REDIS_PASSWORD:-}"
-  db: ${REDIS_DB:-0}
+  host: "127.0.0.1"
+  port: 6379
+  password: ""
+  db: 0
 
 jwt:
-  access_secret: "${JWT_ACCESS_SECRET:-your-access-secret-key-change-me}"
-  refresh_secret: "${JWT_REFRESH_SECRET:-your-refresh-secret-key-change-me}"
-  access_expire_hours: ${JWT_ACCESS_EXPIRE:-2}
-  refresh_expire_days: ${JWT_REFRESH_EXPIRE:-30}
+  access_secret: "your-access-secret-key-change-me"
+  refresh_secret: "your-refresh-secret-key-change-me"
+  access_expire_hours: 2
+  refresh_expire_days: 30
 
 wechat:
-  app_id: "${WECHAT_APP_ID:-}"
-  app_secret: "${WECHAT_APP_SECRET:-}"
+  app_id: ""
+  app_secret: ""
 
 sms:
-  provider: "${SMS_PROVIDER:-mock}"
-  access_key: "${SMS_ACCESS_KEY:-}"
-  access_secret: "${SMS_ACCESS_SECRET:-}"
-  sign_name: "${SMS_SIGN_NAME:-}"
-  template_code: "${SMS_TEMPLATE_CODE:-}"
+  provider: "mock"
+  access_key: ""
+  access_secret: ""
+  sign_name: ""
+  template_code: ""
 
 oss:
-  type: "${OSS_TYPE:-local}"
-  endpoint: "${OSS_ENDPOINT:-}"
-  bucket: "${OSS_BUCKET:-}"
-  access_key: "${OSS_ACCESS_KEY:-}"
-  secret_key: "${OSS_SECRET_KEY:-}"
-  domain: "${OSS_DOMAIN:-}"
+  type: "local"
+  endpoint: ""
+  bucket: ""
+  access_key: ""
+  secret_key: ""
+  domain: ""

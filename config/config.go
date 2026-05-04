@@ -2,6 +2,9 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+
 	"github.com/spf13/viper"
 )
 
@@ -80,6 +83,47 @@ func Load(path string) (*Config, error) {
 	var cfg Config
 	if err := viper.Unmarshal(&cfg); err != nil {
 		return nil, fmt.Errorf("unmarshal config failed: %w", err)
+	}
+
+	// Allow environment variables to override config for Docker support
+	if v := os.Getenv("SERVER_PORT"); v != "" {
+		cfg.Server.Port = v
+	}
+	if v := os.Getenv("SERVER_MODE"); v != "" {
+		cfg.Server.Mode = v
+	}
+	if v := os.Getenv("DB_HOST"); v != "" {
+		cfg.Database.Host = v
+	}
+	if v := os.Getenv("DB_PORT"); v != "" {
+		if port, err := strconv.Atoi(v); err == nil {
+			cfg.Database.Port = port
+		}
+	}
+	if v := os.Getenv("DB_USER"); v != "" {
+		cfg.Database.User = v
+	}
+	if v := os.Getenv("DB_PASSWORD"); v != "" {
+		cfg.Database.Password = v
+	}
+	if v := os.Getenv("DB_NAME"); v != "" {
+		cfg.Database.DBName = v
+	}
+	if v := os.Getenv("REDIS_HOST"); v != "" {
+		cfg.Redis.Host = v
+	}
+	if v := os.Getenv("REDIS_PORT"); v != "" {
+		if port, err := strconv.Atoi(v); err == nil {
+			cfg.Redis.Port = port
+		}
+	}
+	if v := os.Getenv("REDIS_PASSWORD"); v != "" {
+		cfg.Redis.Password = v
+	}
+	if v := os.Getenv("REDIS_DB"); v != "" {
+		if db, err := strconv.Atoi(v); err == nil {
+			cfg.Redis.DB = db
+		}
 	}
 
 	return &cfg, nil

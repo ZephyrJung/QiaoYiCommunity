@@ -70,6 +70,8 @@ docker-compose down -v
 
 **环境变量配置（在 docker-compose.yml 中修改）：**
 
+以下环境变量会覆盖 `config/config.yaml` 中的对应值，便于容器化部署：
+
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
 | DB_HOST | 数据库主机 | mysql |
@@ -79,6 +81,8 @@ docker-compose down -v
 | DB_NAME | 数据库名称 | qiaoyi_community |
 | REDIS_HOST | Redis主机 | redis |
 | REDIS_PORT | Redis端口 | 6379 |
+| REDIS_PASSWORD | Redis密码 | "" |
+| REDIS_DB | Redis数据库 | 0 |
 | SERVER_PORT | 服务端口 | :8080 |
 | SERVER_MODE | 运行模式 | debug |
 
@@ -160,6 +164,8 @@ Layered architecture:
 - ✅ `go build ./...` - Compilation successful
 - ✅ `go test ./...` - Tests pass
 - ✅ `swag init -g cmd/server/main.go` - Swagger docs generated
+- ✅ Docker 配置文件已修复（支持环境变量覆盖，修正镜像标签）
+- ⚠️ Docker 构建因本地镜像源网络问题暂未完成验证（`mirror.ccs.tencentyun.com` 返回 EOF/size validation 错误）
 
 ### Remaining Tasks (Optional Enhancements)
 - [ ] Add unit tests for critical services

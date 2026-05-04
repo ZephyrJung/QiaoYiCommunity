@@ -1,3 +1,13 @@
+// @title QiaoYi Community API
+// @version 1.0
+// @description 桥驿社区互动系统后端 API（微信登录、二手交易、物业反馈、业主交流）
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer {token}" to authenticate
+
 package main
 
 import (

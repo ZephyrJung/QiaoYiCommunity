@@ -5,9 +5,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Response 通用API响应结构体
+// @Description 通用API响应包装
+// @Description code为0表示成功，非0表示错误
+// @Description data字段在成功时包含业务数据，错误时可能为空
+// swagger:model
+//
+//nolint:unused
+var _swagger_Response = Response{}
+
 type Response struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
+	Code    int         `json:"code" example:"0"`
+	Message string      `json:"message" example:"success"`
 	Data    interface{} `json:"data,omitempty"`
 }
 
