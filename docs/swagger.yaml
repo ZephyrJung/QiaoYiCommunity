@@ -1,4 +1,1684 @@
+basePath: /
+definitions:
+  api.phoneLoginReq:
+    properties:
+      code:
+        example: "123456"
+        type: string
+      phone:
+        example: "13800138000"
+        type: string
+    required:
+    - code
+    - phone
+    type: object
+  api.phoneSendCodeReq:
+    properties:
+      phone:
+        example: "13800138000"
+        type: string
+    required:
+    - phone
+    type: object
+  api.refreshTokenReq:
+    properties:
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    required:
+    - refresh_token
+    type: object
+  api.toggleLikeReq:
+    properties:
+      target_id:
+        example: 123456
+        type: integer
+      target_type:
+        enum:
+        - 1
+        - 2
+        example: 1
+        type: integer
+    required:
+    - target_id
+    - target_type
+    type: object
+  api.updateProfileReq:
+    properties:
+      building:
+        example: 1号楼
+        type: string
+      room:
+        example: "301"
+        type: string
+      unit:
+        example: 2单元
+        type: string
+    type: object
+  api.wechatLoginReq:
+    properties:
+      js_code:
+        example: 0134567890abcdef
+        type: string
+    required:
+    - js_code
+    type: object
+  entity.Category:
+    properties:
+      created_at:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      sort_order:
+        type: integer
+      status:
+        type: integer
+      type:
+        type: integer
+    type: object
+  entity.Comment:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      like_count:
+        type: integer
+      parent_id:
+        type: integer
+      post_id:
+        type: integer
+      status:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_id:
+        type: integer
+    type: object
+  entity.Feedback:
+    properties:
+      contact_phone:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          $ref: '#/definitions/entity.FeedbackImage'
+        type: array
+      location:
+        type: string
+      replies:
+        items:
+          $ref: '#/definitions/entity.FeedbackReply'
+        type: array
+      status:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_id:
+        type: integer
+    type: object
+  entity.FeedbackImage:
+    properties:
+      created_at:
+        type: string
+      feedback_id:
+        type: integer
+      id:
+        type: integer
+      url:
+        type: string
+    type: object
+  entity.FeedbackReply:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      feedback_id:
+        type: integer
+      id:
+        type: integer
+      replier:
+        $ref: '#/definitions/entity.User'
+      replier_id:
+        type: integer
+    type: object
+  entity.Item:
+    properties:
+      category:
+        $ref: '#/definitions/entity.Category'
+      category_id:
+        type: integer
+      contact_phone:
+        type: string
+      contact_wechat:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          $ref: '#/definitions/entity.ItemImage'
+        type: array
+      original_price:
+        type: number
+      price:
+        type: number
+      status:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_id:
+        type: integer
+      view_count:
+        type: integer
+    type: object
+  entity.ItemImage:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      item_id:
+        type: integer
+      sort_order:
+        type: integer
+      url:
+        type: string
+    type: object
+  entity.Post:
+    properties:
+      category:
+        $ref: '#/definitions/entity.Category'
+      category_id:
+        type: integer
+      comment_count:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          $ref: '#/definitions/entity.PostImage'
+        type: array
+      is_top:
+        type: integer
+      like_count:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_id:
+        type: integer
+      view_count:
+        type: integer
+    type: object
+  entity.PostImage:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      post_id:
+        type: integer
+      sort_order:
+        type: integer
+      url:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      nickname:
+        type: string
+      open_id:
+        type: string
+      phone:
+        type: string
+      role:
+        type: integer
+      status:
+        type: integer
+      union_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      code:
+        example: 0
+        type: integer
+      data: {}
+      message:
+        example: success
+        type: string
+    type: object
+  service.CreateCommentReq:
+    properties:
+      content:
+        type: string
+      parent_id:
+        type: integer
+      post_id:
+        type: integer
+    required:
+    - content
+    - post_id
+    type: object
+  service.CreateFeedbackReq:
+    properties:
+      contact_phone:
+        type: string
+      description:
+        type: string
+      image_urls:
+        items:
+          type: string
+        type: array
+      location:
+        type: string
+      title:
+        maxLength: 200
+        type: string
+      type:
+        type: integer
+    required:
+    - description
+    - title
+    - type
+    type: object
+  service.CreateItemReq:
+    properties:
+      category_id:
+        type: integer
+      contact_phone:
+        type: string
+      contact_wechat:
+        type: string
+      description:
+        type: string
+      image_urls:
+        items:
+          type: string
+        type: array
+      original_price:
+        type: number
+      price:
+        minimum: 0
+        type: number
+      title:
+        maxLength: 200
+        type: string
+    required:
+    - category_id
+    - price
+    - title
+    type: object
+  service.CreatePostReq:
+    properties:
+      category_id:
+        type: integer
+      content:
+        type: string
+      image_urls:
+        items:
+          type: string
+        type: array
+      title:
+        maxLength: 200
+        type: string
+    required:
+    - category_id
+    - content
+    - title
+    type: object
+  service.CreateReplyReq:
+    properties:
+      content:
+        type: string
+    required:
+    - content
+    type: object
+  service.LoginResult:
+    properties:
+      token:
+        $ref: '#/definitions/service.TokenPair'
+      user:
+        $ref: '#/definitions/entity.User'
+    type: object
+  service.TokenPair:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+    type: object
+  service.UpdateFeedbackReq:
+    properties:
+      contact_phone:
+        type: string
+      description:
+        type: string
+      image_urls:
+        items:
+          type: string
+        type: array
+      location:
+        type: string
+      status:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+    type: object
+  service.UpdateItemReq:
+    properties:
+      category_id:
+        type: integer
+      contact_phone:
+        type: string
+      contact_wechat:
+        type: string
+      description:
+        type: string
+      image_urls:
+        items:
+          type: string
+        type: array
+      original_price:
+        type: number
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+  service.UpdatePostReq:
+    properties:
+      category_id:
+        type: integer
+      content:
+        type: string
+      image_urls:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    type: object
+  utils.PageResult:
+    properties:
+      list: {}
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+host: localhost:8080
 info:
   contact: {}
-paths: {}
+  description: 桥驿社区互动系统后端 API（微信登录、二手交易、物业反馈、业主交流）
+  title: QiaoYi Community API
+  version: "1.0"
+paths:
+  /api/v1/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: 用户退出登录，使refresh token失效
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 退出成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 退出登录
+      tags:
+      - 认证
+  /api/v1/auth/phone/login:
+    post:
+      consumes:
+      - application/json
+      description: 使用手机号和验证码进行登录
+      parameters:
+      - description: 登录请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.phoneLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/service.LoginResult'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 手机验证码登录
+      tags:
+      - 认证
+  /api/v1/auth/phone/send-code:
+    post:
+      consumes:
+      - application/json
+      description: 向指定手机号发送验证码
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.phoneSendCodeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 发送成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 发送短信验证码
+      tags:
+      - 认证
+  /api/v1/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: 使用refresh token获取新的access token
+      parameters:
+      - description: 刷新请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.refreshTokenReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 刷新成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/service.TokenPair'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 刷新令牌
+      tags:
+      - 认证
+  /api/v1/auth/wechat/login:
+    post:
+      consumes:
+      - application/json
+      description: 使用微信小程序code进行登录
+      parameters:
+      - description: 登录请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.wechatLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/service.LoginResult'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 微信小程序登录
+      tags:
+      - 认证
+  /api/v1/categories:
+    get:
+      consumes:
+      - application/json
+      description: 获取帖子或物品的分类列表
+      parameters:
+      - description: 分类类型(1-帖子分类,2-物品分类)
+        format: int32
+        in: query
+        name: type
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.Category'
+                  type: array
+              type: object
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取分类列表
+      tags:
+      - 分类
+  /api/v1/comments:
+    post:
+      consumes:
+      - application/json
+      description: 为帖子创建评论
+      parameters:
+      - description: 创建请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateCommentReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Comment'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建评论
+      tags:
+      - 评论
+  /api/v1/comments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定评论
+      parameters:
+      - description: 评论ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除评论
+      tags:
+      - 评论
+  /api/v1/comments/post/{post_id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据帖子ID获取评论列表
+      parameters:
+      - description: 帖子ID
+        format: int64
+        in: path
+        name: post_id
+        required: true
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/utils.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/entity.Comment'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取帖子评论列表
+      tags:
+      - 评论
+  /api/v1/feedbacks:
+    get:
+      consumes:
+      - application/json
+      description: 获取反馈列表，支持分页和查询自己的反馈
+      parameters:
+      - description: 是否只查询自己的(1-是)
+        in: query
+        name: mine
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/utils.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/entity.Feedback'
+                        type: array
+                    type: object
+              type: object
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取反馈列表
+      tags:
+      - 反馈
+    post:
+      consumes:
+      - application/json
+      description: 创建用户反馈
+      parameters:
+      - description: 创建请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateFeedbackReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Feedback'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建反馈
+      tags:
+      - 反馈
+  /api/v1/feedbacks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定反馈
+      parameters:
+      - description: 反馈ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除反馈
+      tags:
+      - 反馈
+    get:
+      consumes:
+      - application/json
+      description: 根据ID获取反馈详情
+      parameters:
+      - description: 反馈ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Feedback'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: 反馈不存在
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取反馈详情
+      tags:
+      - 反馈
+    put:
+      consumes:
+      - application/json
+      description: 更新已提交的反馈
+      parameters:
+      - description: 反馈ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateFeedbackReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新反馈
+      tags:
+      - 反馈
+  /api/v1/feedbacks/{id}/replies:
+    post:
+      consumes:
+      - application/json
+      description: 对反馈进行回复
+      parameters:
+      - description: 反馈ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 回复内容
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateReplyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 回复成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 回复反馈
+      tags:
+      - 反馈
+  /api/v1/items:
+    get:
+      consumes:
+      - application/json
+      description: 获取二手物品列表，支持分页、分类和价格筛选
+      parameters:
+      - description: 分类ID
+        format: int32
+        in: query
+        name: category_id
+        type: integer
+      - description: 关键词
+        in: query
+        name: keyword
+        type: string
+      - description: 最低价格
+        format: float64
+        in: query
+        name: min_price
+        type: number
+      - description: 最高价格
+        format: float64
+        in: query
+        name: max_price
+        type: number
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/utils.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/entity.Item'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取物品列表
+      tags:
+      - 物品
+    post:
+      consumes:
+      - application/json
+      description: 创建二手物品发布
+      parameters:
+      - description: 创建请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateItemReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Item'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建物品
+      tags:
+      - 物品
+  /api/v1/items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定物品
+      parameters:
+      - description: 物品ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除物品
+      tags:
+      - 物品
+    get:
+      consumes:
+      - application/json
+      description: 根据ID获取物品详情
+      parameters:
+      - description: 物品ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Item'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: 物品不存在
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取物品详情
+      tags:
+      - 物品
+    put:
+      consumes:
+      - application/json
+      description: 更新已发布的物品信息
+      parameters:
+      - description: 物品ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateItemReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新物品
+      tags:
+      - 物品
+  /api/v1/items/{id}/sold:
+    patch:
+      consumes:
+      - application/json
+      description: 将物品状态标记为已售出
+      parameters:
+      - description: 物品ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 标记成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 标记物品已售出
+      tags:
+      - 物品
+  /api/v1/likes/status:
+    get:
+      consumes:
+      - application/json
+      description: 查询当前用户对帖子或评论的点赞状态
+      parameters:
+      - description: 目标类型(1-帖子,2-评论)
+        format: int32
+        in: query
+        name: target_type
+        required: true
+        type: integer
+      - description: 目标ID
+        format: int64
+        in: query
+        name: target_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取点赞状态
+      tags:
+      - 点赞
+  /api/v1/likes/toggle:
+    post:
+      consumes:
+      - application/json
+      description: 对帖子或评论进行点赞或取消点赞操作
+      parameters:
+      - description: 操作请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.toggleLikeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 操作成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 点赞/取消点赞
+      tags:
+      - 点赞
+  /api/v1/posts:
+    get:
+      consumes:
+      - application/json
+      description: 获取帖子列表，支持分页和分类筛选
+      parameters:
+      - description: 分类ID
+        format: int32
+        in: query
+        name: category_id
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/utils.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/entity.Post'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取帖子列表
+      tags:
+      - 帖子
+    post:
+      consumes:
+      - application/json
+      description: 创建社区帖子
+      parameters:
+      - description: 创建请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreatePostReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Post'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建帖子
+      tags:
+      - 帖子
+  /api/v1/posts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定帖子
+      parameters:
+      - description: 帖子ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除帖子
+      tags:
+      - 帖子
+    get:
+      consumes:
+      - application/json
+      description: 根据ID获取帖子详情
+      parameters:
+      - description: 帖子ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Post'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: 帖子不存在
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取帖子详情
+      tags:
+      - 帖子
+    put:
+      consumes:
+      - application/json
+      description: 更新已发布的帖子
+      parameters:
+      - description: 帖子ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdatePostReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新帖子
+      tags:
+      - 帖子
+  /api/v1/upload/images:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传多张图片
+      parameters:
+      - description: 图片文件
+        in: formData
+        name: files
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 上传成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 上传图片
+      tags:
+      - 上传
+  /api/v1/user/profile:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前登录用户的个人信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.User'
+              type: object
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取用户信息
+      tags:
+      - 用户
+    put:
+      consumes:
+      - application/json
+      description: 更新当前登录用户的个人信息（楼号、单元、房间号）
+      parameters:
+      - description: 更新请求
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.updateProfileReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新用户信息
+      tags:
+      - 用户
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer {token}" to authenticate
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -18,6 +18,19 @@ func NewCommentHandler(commentService *service.CommentService) *CommentHandler {
 	return &CommentHandler{commentService: commentService}
 }
 
+// Create 创建评论
+// @Summary 创建评论
+// @Description 为帖子创建评论
+// @Tags 评论
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param body body service.CreateCommentReq true "创建请求"
+// @Success 200 {object} response.Response{data=entity.Comment} "创建成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/comments [post]
 func (h *CommentHandler) Create(c *gin.Context) {
 	var req service.CreateCommentReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -41,6 +54,19 @@ func (h *CommentHandler) Create(c *gin.Context) {
 	response.Success(c, comment)
 }
 
+// ListByPostID 获取帖子评论列表
+// @Summary 获取帖子评论列表
+// @Description 根据帖子ID获取评论列表
+// @Tags 评论
+// @Accept json
+// @Produce json
+// @Param post_id path int64 true "帖子ID"
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(20)
+// @Success 200 {object} response.Response{data=utils.PageResult{list=[]entity.Comment}} "获取成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/comments/post/{post_id} [get]
 func (h *CommentHandler) ListByPostID(c *gin.Context) {
 	postID, err := strconv.ParseInt(c.Param("post_id"), 10, 64)
 	if err != nil {
@@ -64,6 +90,19 @@ func (h *CommentHandler) ListByPostID(c *gin.Context) {
 	response.Success(c, result)
 }
 
+// Delete 删除评论
+// @Summary 删除评论
+// @Description 删除指定评论
+// @Tags 评论
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "评论ID"
+// @Success 200 {object} response.Response "删除成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/comments/{id} [delete]
 func (h *CommentHandler) Delete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {

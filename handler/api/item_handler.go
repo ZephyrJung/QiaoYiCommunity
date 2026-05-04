@@ -19,6 +19,19 @@ func NewItemHandler(itemService *service.ItemService) *ItemHandler {
 	return &ItemHandler{itemService: itemService}
 }
 
+// Create 创建物品
+// @Summary 创建物品
+// @Description 创建二手物品发布
+// @Tags 物品
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param body body service.CreateItemReq true "创建请求"
+// @Success 200 {object} response.Response{data=entity.Item} "创建成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/items [post]
 func (h *ItemHandler) Create(c *gin.Context) {
 	var req service.CreateItemReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -42,6 +55,18 @@ func (h *ItemHandler) Create(c *gin.Context) {
 	response.Success(c, item)
 }
 
+// GetByID 获取物品详情
+// @Summary 获取物品详情
+// @Description 根据ID获取物品详情
+// @Tags 物品
+// @Accept json
+// @Produce json
+// @Param id path int64 true "物品ID"
+// @Success 200 {object} response.Response{data=entity.Item} "获取成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 404 {object} response.Response "物品不存在"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/items/{id} [get]
 func (h *ItemHandler) GetByID(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -58,6 +83,20 @@ func (h *ItemHandler) GetByID(c *gin.Context) {
 	response.Success(c, item)
 }
 
+// Update 更新物品
+// @Summary 更新物品
+// @Description 更新已发布的物品信息
+// @Tags 物品
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "物品ID"
+// @Param body body service.UpdateItemReq true "更新请求"
+// @Success 200 {object} response.Response "更新成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/items/{id} [put]
 func (h *ItemHandler) Update(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -86,6 +125,19 @@ func (h *ItemHandler) Update(c *gin.Context) {
 	response.Success(c, nil)
 }
 
+// Delete 删除物品
+// @Summary 删除物品
+// @Description 删除指定物品
+// @Tags 物品
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "物品ID"
+// @Success 200 {object} response.Response "删除成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/items/{id} [delete]
 func (h *ItemHandler) Delete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -108,6 +160,19 @@ func (h *ItemHandler) Delete(c *gin.Context) {
 	response.Success(c, nil)
 }
 
+// MarkSold 标记物品已售出
+// @Summary 标记物品已售出
+// @Description 将物品状态标记为已售出
+// @Tags 物品
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "物品ID"
+// @Success 200 {object} response.Response "标记成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/items/{id}/sold [patch]
 func (h *ItemHandler) MarkSold(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -130,6 +195,21 @@ func (h *ItemHandler) MarkSold(c *gin.Context) {
 	response.Success(c, nil)
 }
 
+// List 获取物品列表
+// @Summary 获取物品列表
+// @Description 获取二手物品列表，支持分页、分类和价格筛选
+// @Tags 物品
+// @Accept json
+// @Produce json
+// @Param category_id query uint32 false "分类ID"
+// @Param keyword query string false "关键词"
+// @Param min_price query float64 false "最低价格"
+// @Param max_price query float64 false "最高价格"
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(20)
+// @Success 200 {object} response.Response{data=utils.PageResult{list=[]entity.Item}} "获取成功"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/items [get]
 func (h *ItemHandler) List(c *gin.Context) {
 	var page utils.Pagination
 	if err := c.ShouldBindQuery(&page); err != nil {

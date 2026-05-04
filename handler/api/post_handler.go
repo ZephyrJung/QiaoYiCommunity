@@ -18,6 +18,19 @@ func NewPostHandler(postService *service.PostService) *PostHandler {
 	return &PostHandler{postService: postService}
 }
 
+// Create 创建帖子
+// @Summary 创建帖子
+// @Description 创建社区帖子
+// @Tags 帖子
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param body body service.CreatePostReq true "创建请求"
+// @Success 200 {object} response.Response{data=entity.Post} "创建成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/posts [post]
 func (h *PostHandler) Create(c *gin.Context) {
 	var req service.CreatePostReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -41,6 +54,18 @@ func (h *PostHandler) Create(c *gin.Context) {
 	response.Success(c, post)
 }
 
+// GetByID 获取帖子详情
+// @Summary 获取帖子详情
+// @Description 根据ID获取帖子详情
+// @Tags 帖子
+// @Accept json
+// @Produce json
+// @Param id path int64 true "帖子ID"
+// @Success 200 {object} response.Response{data=entity.Post} "获取成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 404 {object} response.Response "帖子不存在"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/posts/{id} [get]
 func (h *PostHandler) GetByID(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -57,6 +82,20 @@ func (h *PostHandler) GetByID(c *gin.Context) {
 	response.Success(c, post)
 }
 
+// Update 更新帖子
+// @Summary 更新帖子
+// @Description 更新已发布的帖子
+// @Tags 帖子
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "帖子ID"
+// @Param body body service.UpdatePostReq true "更新请求"
+// @Success 200 {object} response.Response "更新成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/posts/{id} [put]
 func (h *PostHandler) Update(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -85,6 +124,19 @@ func (h *PostHandler) Update(c *gin.Context) {
 	response.Success(c, nil)
 }
 
+// Delete 删除帖子
+// @Summary 删除帖子
+// @Description 删除指定帖子
+// @Tags 帖子
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int64 true "帖子ID"
+// @Success 200 {object} response.Response "删除成功"
+// @Failure 400 {object} response.Response "请求参数错误"
+// @Failure 401 {object} response.Response "未授权"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/posts/{id} [delete]
 func (h *PostHandler) Delete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -107,6 +159,18 @@ func (h *PostHandler) Delete(c *gin.Context) {
 	response.Success(c, nil)
 }
 
+// List 获取帖子列表
+// @Summary 获取帖子列表
+// @Description 获取帖子列表，支持分页和分类筛选
+// @Tags 帖子
+// @Accept json
+// @Produce json
+// @Param category_id query uint32 false "分类ID"
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(20)
+// @Success 200 {object} response.Response{data=utils.PageResult{list=[]entity.Post}} "获取成功"
+// @Failure 500 {object} response.Response "服务器错误"
+// @Router /api/v1/posts [get]
 func (h *PostHandler) List(c *gin.Context) {
 	var page utils.Pagination
 	if err := c.ShouldBindQuery(&page); err != nil {
